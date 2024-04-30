@@ -4,11 +4,7 @@ export const style = StyleSheet.create({
   clock: {
     alignItems: "flex-end",
   },
-  city: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  city: {},
   interpretation: {
     alignSelf: "flex-end",
     transform: [{ rotate: "-90deg" }],
@@ -22,11 +18,10 @@ export const style = StyleSheet.create({
     alignItems: "baseline",
   },
   temperature: {
-    fontSize: 150,
+    fontSize: 100,
   },
   image: {
-    width: 50,
-    height: 50,
-    backgroundColor: "white",
+    width: 90,
+    height: 90,
   },
 });

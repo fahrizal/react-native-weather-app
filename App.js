@@ -14,6 +14,7 @@ import { useFonts } from "expo-font";
 export default function App() {
   const [coordinates, setCoordinates] = useState();
   const [weather, setWeather] = useState();
+  const [city, setCity] = useState();
   const [isFontLoaded] = useFonts({
     "Alata-Regular": require("./assets/fonts/Alata-Regular.ttf"),
   });
@@ -25,12 +26,18 @@ export default function App() {
   useEffect(() => {
     if (coordinates) {
       fetchWeatherByCoords(coordinates);
+      fetchCityByCoords(coordinates);
     }
   }, [coordinates]);
 
   async function fetchWeatherByCoords(coords) {
     const weatherResponse = await MeteoAPI.fetchWeatherByCoords(coords);
     setWeather(weatherResponse);
+  }
+
+  async function fetchCityByCoords(coords) {
+    const cityResponse = await MeteoAPI.fetchCityWeatherByCoords(coords);
+    setCity(cityResponse);
   }
 
   async function getUserCoodinates() {
@@ -60,7 +67,7 @@ export default function App() {
     >
       <SafeAreaProvider>
         <SafeAreaView style={style.container}>
-          {isFontLoaded && weather && <Home weather={weather} />}
+          {isFontLoaded && weather && <Home city={city} weather={weather} />}
         </SafeAreaView>
       </SafeAreaProvider>
     </ImageBackground>
