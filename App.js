@@ -1,24 +1,24 @@
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { style } from "./App.style";
-import { Home } from "./pages/Home/Home";
-import { Forecasts } from "./pages/Forecasts/Forecasts";
-import { ImageBackground } from "react-native";
-import backgroundImg from "./assets/background.png";
-import { useEffect, useState } from "react";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { style } from './App.style';
+import { Home } from './pages/Home/Home';
+import { Forecasts } from './pages/Forecasts/Forecasts';
+import { ImageBackground } from 'react-native';
+import backgroundImg from './assets/background.png';
+import { useEffect, useState } from 'react';
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
-} from "expo-location";
-import { MeteoAPI } from "./api/meteo";
-import { useFonts } from "expo-font";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+} from 'expo-location';
+import { MeteoAPI } from './api/meteo';
+import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
 const navTheme = {
   colors: {
-    background: "transparent",
+    background: 'transparent',
   },
 };
 
@@ -27,7 +27,7 @@ export default function App() {
   const [weather, setWeather] = useState();
   const [city, setCity] = useState();
   const [isFontLoaded] = useFonts({
-    "Alata-Regular": require("./assets/fonts/Alata-Regular.ttf"),
+    'Alata-Regular': require('./assets/fonts/Alata-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -51,9 +51,18 @@ export default function App() {
     setCity(cityResponse);
   }
 
+  async function fetchCcoordsByCity(city) {
+    try {
+      const coordsResponse = await MeteoAPI.fetchCoordsByCity(city);
+      setCoordinates(coordsResponse);
+    } catch (err) {
+      Alert.alert('Ouch! ', err);
+    }
+  }
+
   async function getUserCoodinates() {
     const { status } = await requestForegroundPermissionsAsync();
-    if (status === "granted") {
+    if (status === 'granted') {
       const location = await getCurrentPositionAsync({});
       setCoordinates({
         lat: location.coords.latitude,
@@ -78,11 +87,17 @@ export default function App() {
           <SafeAreaView style={style.container}>
             {isFontLoaded && weather && (
               <Stack.Navigator
-                screenOptions={{ headerShown: false, animation: "fade" }}
+                screenOptions={{ headerShown: false, animation: 'fade' }}
                 initialRouteName="Home"
               >
                 <Stack.Screen name="Home">
-                  {() => <Home city={city} weather={weather} />}
+                  {() => (
+                    <Home
+                      city={city}
+                      weather={weather}
+                      onSubmitSearch={fetchCcoordsByCity}
+                    />
+                  )}
                 </Stack.Screen>
                 <Stack.Screen name="Forecasts" component={Forecasts} />
               </Stack.Navigator>
