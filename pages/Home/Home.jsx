@@ -1,17 +1,20 @@
 import { Text, View } from "react-native";
 import { style } from "./Home.style";
+import { Txt } from "../../components/Txt/Txt";
+import { MeteoBasic } from "../../components/MeteoBasic/MeteoBasic";
 
-export function Home() {
+export function Home({ weather }) {
+  const currentWeather = weather.current_weather;
   return (
     <>
       <View style={style.meteo_basic}>
-        <Text style={style.txt}>Basic Weather Info</Text>
+        <MeteoBasic temperature={Math.round(currentWeather.temperature)} />
       </View>
       <View style={style.searchbar}>
-        <Text style={style.txt}>SearchBar</Text>
+        <Txt>SearchBar</Txt>
       </View>
       <View style={style.meteo_advanced}>
-        <Text style={style.txt}>Advanced Weather Info</Text>
+        <Txt>Advanced Weather Info</Txt>
       </View>
     </>
   );

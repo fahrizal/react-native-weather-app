@@ -14,6 +14,9 @@ import { useFonts } from "expo-font";
 export default function App() {
   const [coordinates, setCoordinates] = useState();
   const [weather, setWeather] = useState();
+  const [isFontLoaded] = useFonts({
+    "Alata-Regular": require("./assets/fonts/Alata-Regular.ttf"),
+  });
 
   useEffect(() => {
     getUserCoodinates();
@@ -57,7 +60,7 @@ export default function App() {
     >
       <SafeAreaProvider>
         <SafeAreaView style={style.container}>
-          <Home />
+          {isFontLoaded && weather && <Home weather={weather} />}
         </SafeAreaView>
       </SafeAreaProvider>
     </ImageBackground>
