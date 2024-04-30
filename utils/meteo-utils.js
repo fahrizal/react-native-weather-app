@@ -31,3 +31,5 @@ export function getWeatherInterpretation(code) {
     interpretation.codes.includes(code)
   );
 }
+
+export const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

@@ -1,9 +1,17 @@
 import { style } from "./MeteoBasic.style";
-import { Image, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Txt } from "../Txt/Txt";
 import { Clock } from "../Clock/Clock";
 
-export function MeteoBasic({ temperature, interpretation, city }) {
+export function MeteoBasic({
+  temperature,
+  interpretation,
+  city,
+  dailyWeather,
+}) {
+  const nav = useNavigation();
+
   return (
     <>
       <View style={style.clock}>
@@ -16,7 +24,11 @@ export function MeteoBasic({ temperature, interpretation, city }) {
         <Txt style={style.interpretation_txt}>{interpretation.label}</Txt>
       </View>
       <View style={style.temperature_box}>
-        <Txt style={style.temperature}>{temperature}°</Txt>
+        <TouchableOpacity
+          onPress={() => nav.navigate("Forecasts", { city, ...dailyWeather })}
+        >
+          <Txt style={style.temperature}>{temperature}°</Txt>
+        </TouchableOpacity>
         <Image style={style.image} source={interpretation.image} />
       </View>
     </>
